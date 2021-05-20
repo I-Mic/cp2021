@@ -1017,10 +1017,100 @@ ad v = p2 . cataExpAr (ad_gen v)
 \end{code}
 Definir:
 
+Para descobrir outExpAr foi resolvida a equação:
+\begin{eqnarray*}
+\start
+  |outExpAr . inExpAr = id|
+%
+\just\equiv{ def inExpAr pelo enunciado }
+%
+        |outExpAr . either (const X) num_ops = id|
+%
+\just\equiv{ Fusao-+ (20) }
+%
+        |either (outExpAr . const X) (outExpAr . num_ops) = id|
+%
+\just\equiv{ Universal-+ (17) }
+%
+        |lcbr(
+    outExpAr . const X = id . i1
+  )(
+    outExpAr . num_ops = id . i2
+  )|
+%
+\just\equiv{ Natural-id (1); Def num ops = [N , ops]}
+%
+        |lcbr(
+    outExpAr . const X = i1
+  )(
+    outExpAr . either N ops = i2
+  )|
+ %
+\just\equiv{ Def ops}
+%
+        |lcbr(
+    outExpAr . const X = i1
+  )(
+    outExpAr . either N (either bin (uncurry Un)) = i2
+  )|
+%
+\just\equiv{ Fusao-+ (20)}
+%
+        |lcbr(
+    outExpAr . const X = i1
+  )(
+    either (outExpAr . N) (outExpAr . either (bin uncurry Un)) = i2
+  )|
+%
+\just\equiv{ Universal-+ (17)}
+%
+        |lcbr(
+    outExpAr . const X = i1
+  )(
+    outExpAr . N = i2 . i1
+  )|
+      |lcbr(
+    outExpAr . bin = i2 . i2 . i1
+  )(
+    outExpAr . uncurry Un = i2 . i2 . i2
+  )|
+%
+\just\equiv{ Igualdade extensional (71) ; def-comp (72)}
+%
+        |lcbr(
+    outExpAr((const X) a) = i1 a
+  )(
+    outExpAr (N a) = (i2 . i1) a
+  )|
+    |lcbr(
+    outExpAr (bin a)  = (i2 . i2 . i1) a
+  )(
+    outExpAr ((uncurry Un) a) = i2 . i2 . i2 a
+  )|
+%
+\just\equiv{ Def-const (74); para a = (op,(a,b)) def bin (op,(a,b)) = Bin op a b; Uncurry para a = op a}
+%
+        |lcbr(
+    outExpAr X = i1 ()
+  )(
+    outExpAr (N a) = (i2 . i1) a
+  )|
+        |lcbr(
+    outExpAr (Bin op a b) = (i2 . i2 . i1) (op,(a,b))
+  )(
+    outExpAr (Un op a) = (i2 . i2 . i2) (op,a)
+  )|
+\qed
+
+pelo que:
+
 \begin{code}
-outExpAr = undefined 
+outExpAr X = i1 ()
+outExpAr (N a) = (i2 . i1) a
+outExpAr (Bin op a b) = (i2. i2 . i1) (op,(a,b))
+outExpAr (Un op a) = (i2 . i2 . i2) (op,a)
 ---
-recExpAr = undefined
+recExpAr f = baseExpAr id id id f f id f 
 ---
 g_eval_exp = undefined
 ---
@@ -1042,9 +1132,9 @@ ad_gen = undefined
 \subsection*{Problema 2}
 Definir
 \begin{code}
-loop = undefined
-inic = undefined
-prj = undefined
+loop (c,a,b) = (div (a*c) b,a+4,b+1) 
+inic = (1,2,2)
+prj (c,a,b) = c
 \end{code}
 por forma a que
 \begin{code}
