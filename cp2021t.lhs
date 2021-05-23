@@ -1167,12 +1167,16 @@ avg = p1.avg_aux
 \end{code}
 
 \begin{code}
-avg_aux = undefined
+avg_aux = cataList (either a b) where
+ a () = (0,0)
+ b (a,(x,l)) = ((a + l * x) / (l + 1), l + 1)
 \end{code}
 Solução para árvores de tipo \LTree:
 \begin{code}
 avgLTree = p1.cataLTree gene where
-   gene = undefined
+   gene = either a b
+   a x = (x,1)
+   b ((x,esq),(y,dir)) = (((x * esq) + (y * dir)) / (esq + dir) , esq + dir)
 \end{code}
 
 \subsection*{Problema 5}
