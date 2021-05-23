@@ -1144,6 +1144,29 @@ seja a função pretendida.
 \textbf{NB}: usar divisão inteira.
 Apresentar de seguida a justificação da solução encontrada.
 
+\begin{eq}
+  C_n = \frac{(2n)!}{(n+1)! (n!) }
+\end{eq}
+\par
+  C_0 = 1 
+\par
+\begin{eq}
+  C_(n + 1) = \frac{4n + 2}{n + 2 } \times C_n
+\end{eq}
+\par
+logo:\par
+a_0 = 2 
+\par
+a(n + 1) = 4(n + 1) + 2 = a_n + 4
+\par
+e\par
+\par
+b_0 = 2 
+\par
+b(n + 1) = (n + 1) + 2 = b_n + 1
+
+
+
 \subsection*{Problema 3}
 
 \begin{code}
