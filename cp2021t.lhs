@@ -1110,6 +1110,25 @@ outExpAr (N a) = (i2 . i1) a
 outExpAr (Bin op a b) = (i2. i2 . i1) (op,(a,b))
 outExpAr (Un op a) = (i2 . i2 . i2) (op,a)
 ---
+\end{code}
+
+\begin{eqnarray*}
+\xymatrix@@C=2cm{
+    |ExpAr|
+           \ar[d]_-{|cataNat g|}
+           \ar[r]^-{outExpAr}
+&
+    |Either () (Either a (Either (BinOp, (ExpAr a, ExpAr a)) (UnOp, ExpAr a)))|
+           \ar[d]^{|id + id| \times |(cataNat g)|}
+\\
+    |Nat0|
+&
+     |Nat0 + Nat0| \times (Double \times |Nat0|)
+           \ar[l]^-{|g|}
+}
+\end{eqnarray*}
+
+\begin{code}
 recExpAr f = baseExpAr id id id f f id f 
 ---
 g_eval_exp val expression = 
@@ -1159,11 +1178,15 @@ Apresentar de seguida a justificação da solução encontrada.
 \end{eq}
 \par
 logo:\par
+
+a n = 4n + 2\par
+
 a_0 = 2 
 \par
 a(n + 1) = 4(n + 1) + 2 = a_n + 4
 \par
 e\par
+b n = n + 2 \par
 \par
 b_0 = 2 
 \par
