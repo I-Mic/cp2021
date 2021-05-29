@@ -1112,7 +1112,11 @@ outExpAr (Un op a) = (i2 . i2 . i2) (op,a)
 ---
 recExpAr f = baseExpAr id id id f f id f 
 ---
-g_eval_exp = undefined
+g_eval_exp val expression = 
+    case expression of (Left ()) -> val
+                       (Right (Left n)) -> n
+                       (Right (Right (Left (binop,(a,b))))) -> if binop == Sum then a + b else a * b
+                       (Right (Right (Right (unop,a)))) -> if unop == Negate then negate a else expd a
 ---
 clean = undefined
 ---
@@ -1189,12 +1193,52 @@ Solução para listas não vazias:
 avg = p1.avg_aux
 \end{code}
 
+\begin{eqnarray*}
+\xymatrix@@C=2cm{
+    |Nat0|
+           \ar[d]_-{|cataNat g|}
+           \ar[r]^-{outListNV}
+&
+    |Nat0 + Nat0| \times |Nat0|^*
+           \ar[d]^{|id + id| \times |(cataNat g)|}
+\\
+     Double \times |Nat0|
+&
+     |Nat0 + Nat0| \times (Double \times |Nat0|)
+           \ar[l]^-{|g|}
+}
+\end{eqnarray*}
+
 \begin{code}
-avg_aux = cataList (either a b) where
- a () = (0,0)
+-- Out para listas não vazias
+outListNV (a:[])  = i1 (a)
+outListNV (a:x) = i2(a,x)
+
+-- Catamorfismo para listas não vazias
+cataListNV g   = g . (id -|- id >< cataListNV g) . outListNV
+
+avg_aux = cataListNV (either a b) where
+ a (x) = (x,1)
  b (a,(x,l)) = ((a + l * x) / (l + 1), l + 1)
 \end{code}
 Solução para árvores de tipo \LTree:
+
+\begin{eqnarray*}
+\xymatrix@@C=2cm{
+    LTree |Nat0|
+           \ar[d]_-{|cataNat g|}
+           \ar[r]^-{out}
+&
+    |Nat0| + (LTree |Nat0| \times LTree |Nat0|)
+           \ar[d]^{|id + cataNat g| \times |cataNat g|}
+\\
+     Double \times |Nat0|
+&
+     |Nat0 + | ((Double \times |Nat0|) \times (Double \times |Nat0|))
+           \ar[l]^-{|g|}
+}
+\end{eqnarray*}
+
 \begin{code}
 avgLTree = p1.cataLTree gene where
    gene = either a b
