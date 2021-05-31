@@ -1139,7 +1139,7 @@ g_eval_exp val expression =
 ---
 clean = undefined
 ---
-gopt = undefined 
+gopt a = g_eval_exp a
 \end{code}
 
 \begin{code}
