@@ -1218,11 +1218,11 @@ avg = p1.avg_aux
 
 \begin{eqnarray*}
 \xymatrix@@C=2cm{
-    |Nat0|
+    |Nat0|^+
            \ar[d]_-{|cataNat g|}
            \ar[r]^-{outListNV}
 &
-    |Nat0 + Nat0| \times |Nat0|^*
+    |Nat0 + Nat0| \times |Nat0|^+
            \ar[d]^{|id + id| \times |(cataNat g)|}
 \\
      Double \times |Nat0|
