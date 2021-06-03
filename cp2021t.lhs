@@ -1151,7 +1151,12 @@ gopt a = g_eval_exp a
 \begin{code}
 sd_gen :: Floating a =>
     Either () (Either a (Either (BinOp, ((ExpAr a, ExpAr a), (ExpAr a, ExpAr a))) (UnOp, (ExpAr a, ExpAr a)))) -> (ExpAr a, ExpAr a)
-sd_gen = undefined
+sd_gen (Left ()) = (X, N 1)
+sd_gen (Right (Left n)) = (N n, N 0)
+sd_gen (Right (Right (Left (Sum,((l1,r1),(l2,r2)))))) = (Bin Sum l1 l2, Bin Sum r1 r2)
+sd_gen (Right (Right (Left (Product,((l1,r1),(l2,r2)))))) = (Bin Product l1 l2, Bin Sum (Bin Product l1 r2) (Bin Product r1 l2))
+sd_gen (Right (Right (Right (E,(l,r))))) = (Un E l, Bin Product (Un E l) r)
+sd_gen (Right (Right (Right (Negate,(l,r))))) = (Un Negate l, Un Negate r)
 \end{code}
 
 \begin{code}
@@ -1201,7 +1206,21 @@ b(n + 1) = (n + 1) + 2 = b_n + 1
 
 
 \subsection*{Problema 3}
-
+\begin{eqnarray*}
+\xymatrix@@C=2cm{
+    |NPoint|
+           \ar[d]_-{|calcLine|}
+           \ar[r]^-{out}
+&
+    |1 + A| \times NPoint
+           \ar[d]^{|id + id| \times |calcLine|}
+\\
+     OverTime NPoint
+&
+     |1 + A| \times OverTime NPoint
+           \ar[l]^-{|g| = |either a b|}
+}
+\end{eqnarray*}
 \begin{code}
 calcLine :: NPoint -> (NPoint -> OverTime NPoint)
 calcLine = cataList h where
