@@ -1118,12 +1118,12 @@ outExpAr (Un op a) = (i2 . i2 . i2) (op,a)
            \ar[d]_-{|cataNat g|}
            \ar[r]^-{outExpAr}
 &
-    |Either () (Either a (Either (BinOp, (ExpAr a, ExpAr a)) (UnOp, ExpAr a)))|
-           \ar[d]^{|id + id| \times |(cataNat g)|}
+    |Either () (Either a (Either (Prod (BinOp) ((Prod (ExpAr a) (ExpAr a)))) (Prod (UnOp) (ExpAr a))))|
+           \ar[d]^{|id + (id + (id| \times |(cataNat g)| \times |(cataNat g)) + id| \times |(cataNat g)))|}
 \\
     |Nat0|
 &
-     |Nat0 + Nat0| \times (Double \times |Nat0|)
+     |Either () (Either a (Either (Prod (BinOp) ((Prod (Nat0) (Nat0)))) (Prod (UnOp) (Nat0))))|
            \ar[l]^-{|g|}
 }
 \end{eqnarray*}
