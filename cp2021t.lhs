@@ -127,15 +127,15 @@
 
 \begin{center}\large
 \begin{tabular}{ll}
-\textbf{Grupo} nr. & 999 (preencher)
+\textbf{Grupo} nr. & 13
 \\\hline
-a11111 & Nome1 (preencher)	
+a79987 & Ana Guimarães	
 \\
-a22222 & Nome2 (preencher)	
+a64296 & André Ferreira	
 \\
-a33333 & Nome3 (preencher)	
+a89512 & Manuel Novais	
 \\
-a44444 & Nome4 (preencher, se aplicável, ou apagar)	
+a58898 & Rui Coelho	
 \end{tabular}
 \end{center}
 
@@ -1119,12 +1119,12 @@ outExpAr (Un op a) = (i2 . i2 . i2) (op,a)
            \ar[r]^-{outExpAr}
 &
     |Either () (Either a (Either (Prod (BinOp) ((Prod (ExpAr a) (ExpAr a)))) (Prod (UnOp) (ExpAr a))))|
-           \ar[d]^{|id + (id + (id| \times |(cataNat g)| \times |(cataNat g)) + id| \times |(cataNat g)))|}
+           \ar[d]^{|id + (id + (id| \times (|(cataNat g)| \times |(cataNat g)) + (id| \times |(cataNat g))))|}
 \\
     |Nat0|
 &
      |Either () (Either a (Either (Prod (BinOp) ((Prod (Nat0) (Nat0)))) (Prod (UnOp) (Nat0))))|
-           \ar[l]^-{|g|}
+           \ar[l]^-{|g_eval_exp|}
 }
 \end{eqnarray*}
 
@@ -1133,9 +1133,9 @@ recExpAr f = baseExpAr id id id f f id f
 ---
 g_eval_exp val expression = 
     case expression of (Left ()) -> val
-                       (Right (Left n)) -> n
-                       (Right (Right (Left (binop,(a,b))))) -> if binop == Sum then a + b else a * b
-                       (Right (Right (Right (unop,a)))) -> if unop == Negate then negate a else expd a
+                       		(Right (Left n)) -> n
+                       		(Right (Right (Left (binop,(a,b))))) -> if binop == Sum then a + b else a * b
+                       		(Right (Right (Right (unop,a)))) -> if unop == Negate then negate a else expd a
 ---
 clean = undefined
 ---
@@ -1238,7 +1238,7 @@ outListNV (a:[])  = i1 (a)
 outListNV (a:x) = i2(a,x)
 
 -- Catamorfismo para listas não vazias
-cataListNV g   = g . (id -|- id >< cataListNV g) . outListNV
+cataListNV g   = g . recList (cataListNV g) . outListNV
 
 avg_aux = cataListNV (either a b) where
  a (x) = (x,1)
