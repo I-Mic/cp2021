@@ -1115,7 +1115,7 @@ outExpAr (Un op a) = (i2 . i2 . i2) (op,a)
 \begin{eqnarray*}
 \xymatrix@@C=2cm{
     |ExpAr|
-           \ar[d]_-{|cataNat g|}
+           \ar[d]_-{|eval_exp|}
            \ar[r]^-{outExpAr}
 &
     |Either () (Either a (Either (Prod (BinOp) ((Prod (ExpAr a) (ExpAr a)))) (Prod (UnOp) (ExpAr a))))|
@@ -1150,17 +1150,24 @@ gopt a = g_eval_exp a
 
 \begin{code}
 sd_gen :: Floating a =>
-    Either () (Either a (Either (BinOp, ((ExpAr a, ExpAr a), (ExpAr a, ExpAr a))) (UnOp, (ExpAr a, ExpAr a)))) -> (ExpAr a, ExpAr a)
+    Either () (Either a (Either (BinOp, ((ExpAr a, ExpAr a), (ExpAr a, ExpAr a))) (UnOp, (ExpAr a, ExpAr a)))) ->
+     (ExpAr a, ExpAr a)
 sd_gen (Left ()) = (X, N 1)
 sd_gen (Right (Left n)) = (N n, N 0)
 sd_gen (Right (Right (Left (Sum,((l1,r1),(l2,r2)))))) = (Bin Sum l1 l2, Bin Sum r1 r2)
-sd_gen (Right (Right (Left (Product,((l1,r1),(l2,r2)))))) = (Bin Product l1 l2, Bin Sum (Bin Product l1 r2) (Bin Product r1 l2))
+sd_gen (Right (Right (Left (Product,((l1,r1),(l2,r2)))))) = (Bin Product l1 l2, Bin Sum (Bin Product l1 r2)
+                                                            (Bin Product r1 l2))
 sd_gen (Right (Right (Right (E,(l,r))))) = (Un E l, Bin Product (Un E l) r)
 sd_gen (Right (Right (Right (Negate,(l,r))))) = (Un Negate l, Un Negate r)
 \end{code}
 
 \begin{code}
-ad_gen = undefined
+ad_gen a (Left ()) = (a, 1)
+ad_gen a (Right (Left n)) = (n, 0)
+ad_gen a (Right (Right (Left (Sum,((l1,r1),(l2,r2)))))) = (l1 + l2, r1 + r2)
+ad_gen a (Right (Right (Left (Product,((l1,r1),(l2,r2)))))) = (l1 * l2, (l1 * r2) + (l2 * r1))
+ad_gen a (Right (Right (Right (E,(l,r))))) = (expd l, r * (expd l))
+ad_gen a (Right (Right (Right (Negate,(l,r))))) = (negate l, negate r)
 \end{code}
 
 \subsection*{Problema 2}
