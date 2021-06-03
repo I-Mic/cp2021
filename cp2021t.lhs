@@ -1133,9 +1133,9 @@ recExpAr f = baseExpAr id id id f f id f
 ---
 g_eval_exp val expression = 
     case expression of (Left ()) -> val
-                       		(Right (Left n)) -> n
-                       		(Right (Right (Left (binop,(a,b))))) -> if binop == Sum then a + b else a * b
-                       		(Right (Right (Right (unop,a)))) -> if unop == Negate then negate a else expd a
+                       (Right (Left n)) -> n
+                       (Right (Right (Left (binop,(a,b))))) -> if binop == Sum then a + b else a * b
+                       (Right (Right (Right (unop,a)))) -> if unop == Negate then negate a else expd a
 ---
 clean = undefined
 ---
