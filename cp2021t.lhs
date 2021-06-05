@@ -1243,10 +1243,14 @@ g (d,f) l = case l of
 
 deCasteljau :: [NPoint] -> OverTime NPoint
 deCasteljau = hyloAlgForm alg coalg where
-   coalg = undefined
-   alg = undefined
-
-hyloAlgForm = undefined
+   coalg [] = i1 nil
+   coalg [p] = i1 (const p)
+   coalg l = i2 ((init l),(tail l))
+   alg = either a b where
+      a l = l 
+      b (l,ls) = \pt -> (calcLine (l pt) (ls pt)) pt
+      
+hyloAlgForm h g = cataLTree h . anaLTree g
 \end{code}
 
 \subsection*{Problema 4}
